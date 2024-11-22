@@ -17,6 +17,6 @@ export async function GET(request: Request) {
     // Combine responses into a single object
   
   
-    return new Response(JSON.stringify({helllo: 'world'}), { status: 200 });
+    return new Response(JSON.stringify(rawDataJson), { status: 200 });
   }
   
