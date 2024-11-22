@@ -19,7 +19,7 @@ export async function getData(collection: string): Promise<FetchResponse> {
 
     while (fetchMore) {
       const response = await fetch(`${baseUrl}?offset=${offset}&limit=100`, {
-        next: { revalidate: 360 },
+        next: { revalidate: 1800 },
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${randomString}`,

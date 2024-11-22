@@ -4,7 +4,7 @@ import { getData } from "@/app/lib/webflow/getData";
 
 export async function GET(request: Request) {
     // Get IDs by display name where needed
-   const id =  getIdByDisplayName("News")
+   const id =  getIdByDisplayName("Multimedia")
   
     // Fetch raw data for each collection
     const rawData = await getData(id);
