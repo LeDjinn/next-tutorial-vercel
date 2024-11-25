@@ -27,7 +27,7 @@ export async function getData(collection: string): Promise<FetchResponse> {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch, status: ${response.status}`);
+        throw new Error(`Failed to fetch, stattus: ${response.status}`);
       }
 
       const data = await response.json();
