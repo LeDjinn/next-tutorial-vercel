@@ -65,7 +65,7 @@ async function populatePostsTableUpdate(posts: PostFieldsCleaned[]) {
       }
       console.log("posts table updated successfully.");
     } catch (error: any) {
-      console.error("Error updating news table:", error.message);
+      console.error("Error updating posts table:", error.message);
     }
   }
   
