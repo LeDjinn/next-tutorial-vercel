@@ -104,6 +104,7 @@ export default function postMapper(
 
 
   return {
+    originalSlug: fieldData.slug || "",
     webflowCollectionId: collectionId,
     webflowId: item.id,
     videoAsHeroYesNo: fieldData["video-as-hero-yes-no"] || false,

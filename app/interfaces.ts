@@ -651,6 +651,7 @@ export interface PeopleRawFields {
 export interface PostFieldsCleaned {
   webflowId: string;
   webflowCollectionId: string;
+  originalSlug: string;
   videoAsHeroYesNo: boolean;
   heroVideoYoutubeEmbedId: string;
   heroVideoArabicYoutubeVideoId: string;

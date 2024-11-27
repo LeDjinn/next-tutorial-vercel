@@ -3,7 +3,7 @@ import { sql } from "@vercel/postgres";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const offset = parseInt(url.searchParams.get("offset") || "0", 10); // Default offset to 0 if not provided
-  const limit = 10; // Fixed chunk size of 10 rows
+  const limit = 100; // Fixed chunk size of 10 rows
 
   try {
     const { rows } = await sql`

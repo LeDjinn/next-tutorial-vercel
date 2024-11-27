@@ -26,7 +26,49 @@ async function getCleanPosts() {
 
   return postsClean;
 }
-
+async function populatePostsTableUpdate(posts: PostFieldsCleaned[]) {
+    try {
+      for (const singleNews of posts) {
+        // Check if the record exists
+        const existingRecord = await client.sql`
+          SELECT * FROM posts WHERE webflow_item_id = ${singleNews.webflowId};
+        `;
+  
+        if (existingRecord.rows.length > 0) {
+          // Update the existing record's slug with originalSlug
+          await client.sql`
+            UPDATE posts
+            SET slug = ${singleNews.originalSlug},
+                updated_at = ${new Date().toISOString()},
+                field_data = ${JSON.stringify(singleNews)}::JSONB
+            WHERE webflow_item_id = ${singleNews.webflowId};
+          `;
+        } else {
+          // Insert new record if it doesn't exist
+          await client.sql`
+            INSERT INTO posts (webflow_collection_id, webflow_item_id, created_at, updated_at, field_data, slug)
+            VALUES (
+              ${singleNews.webflowCollectionId},
+              ${singleNews.webflowId},
+              ${
+                singleNews.createdOn
+                  ? new Date(singleNews.createdOn).toISOString()
+                  : new Date().toISOString()
+              },
+              ${new Date().toISOString()},
+              ${JSON.stringify(singleNews)}::JSONB,
+              ${singleNews.originalSlug} -- Use originalSlug here
+            )
+            ON CONFLICT DO NOTHING;
+          `;
+        }
+      }
+      console.log("posts table updated successfully.");
+    } catch (error: any) {
+      console.error("Error updating news table:", error.message);
+    }
+  }
+  
 async function populatePostsTable(posts: PostFieldsCleaned[]) {
   try {
     for (const post of posts) {
@@ -58,7 +100,7 @@ export async function GET() {
   try {
     const posts: PostFieldsCleaned[] = await getCleanPosts();
     console.log("Populating posts table...");
-    await populatePostsTable(posts);
+    await populatePostsTableUpdate(posts);
     return new Response(
       JSON.stringify({ message: "Posts table populated successfully" }),
       {
