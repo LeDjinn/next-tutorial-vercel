@@ -1,6 +1,5 @@
 import { StaticImageData } from "next/image";
 
-
 interface ImageProps {
   url: string;
   alt: string;
@@ -10,15 +9,11 @@ interface DataEntry {
   url: string;
 }
 
-
 export interface DataItem {
   [key: string]: DataEntry[] | undefined;
 }
 
-
 export type DataChecksType = Array<DataItem | undefined>;
-
-
 
 export interface HomeCardProps {
   imageUrl: string;
@@ -42,7 +37,7 @@ export interface ButtonCJProps {
 }
 export interface CardProgrammeProps {
   imageUrl: string;
-  locale?:string
+  locale?: string;
   arabicProgrammeTitle?: string;
   arabicProgrammeType?: string;
   programmeTitle: string;
@@ -75,7 +70,6 @@ export interface SocialMediaLink {
   name: string;
 }
 export interface SocialMediaLinks {
-  
   length: number;
   instagram?: SocialMediaLink;
   youtube?: SocialMediaLink;
@@ -218,8 +212,8 @@ export interface Item<T> {
 export interface EventFieldData {
   "main-video-embed-code": string;
   "video-2-embed-code": string;
-    "video-3-embed-code": string;
-  "createdOn": string;
+  "video-3-embed-code": string;
+  createdOn: string;
   "push-to-gr": boolean;
   "programme-label": string;
   "related-programme-s": string[];
@@ -366,7 +360,6 @@ export interface EventCardProps {
 // EVENTS DATA END //
 
 export interface ProgrammeRawFields {
-
   "push-to-gr"?: string;
   type?: string;
   "link-to-page"?: string;
@@ -429,7 +422,6 @@ export interface ProgrammeRawFields {
   slug?: string;
 }
 export interface ProgrammeCleanedFields {
-
   logoSvgOriginalRatio: ImageProps;
   logoSvgLightOriginalRatio: ImageProps;
   pushToGr: string;
@@ -565,10 +557,10 @@ export interface LightboxProps {
 }
 export interface FieldsPostRaw {
   "hero-video-arabic-youtube-video-id"?: string;
-  "video-as-hero-yes-no"?:boolean;
-  "hero-video-youtube-embed-id"?:string;
-  "arabic-complete-incomplete" : boolean
-  "createdOn": string;
+  "video-as-hero-yes-no"?: boolean;
+  "hero-video-youtube-embed-id"?: string;
+  "arabic-complete-incomplete": boolean;
+  createdOn: string;
   "arabic-title"?: string;
   "push-to-gr"?: boolean;
   "programme-2"?: string;
@@ -607,8 +599,7 @@ export interface FieldsPostRaw {
 }
 
 export interface PeopleRawFields {
-
-  "createdOn": string;
+  createdOn: string;
   "name-arabic"?: string;
   "arabic-on-off"?: boolean;
   "push-to-gr"?: boolean;
@@ -792,7 +783,7 @@ export interface PeopleCleanedFields {
   featureVideo: string;
 }
 export interface MultimediaRawFields {
-  "createdOn": string;
+  createdOn: string;
   "name-arabic"?: string;
   "push-to-gr"?: boolean;
   "programme-label"?: string;
@@ -894,7 +885,7 @@ export interface NewsCleanedFields {
   collectionName: "press";
   webflowId: string;
   webflowCollectionId: string;
-
+  originalSlug: string;
   featured: boolean;
   externalLink: string;
   datePublished: string;
@@ -918,6 +909,7 @@ export interface NewsCleanedFields {
   removeFromNewsGrid: boolean;
   name: string;
   slug: string;
+  
 }
 export interface MediaCardProps {
   imageUrl: string;
@@ -944,7 +936,7 @@ export interface NewsMainProps {
   authorImage: string;
 }
 export interface PublicationsRawFields {
-  "createdOn": string;
+  createdOn: string;
   "name-arabic"?: string;
   "date-published"?: string;
   type?: string;
@@ -1124,7 +1116,8 @@ export interface CategorieCleanedFields {
 export interface NewsRawFields {
   webflowId: string;
   webflowCollectionId: string;
-  "createdOn": string;
+
+  createdOn: string;
   "arabic-title"?: string;
   "push-to-gr"?: boolean;
   featured?: boolean;

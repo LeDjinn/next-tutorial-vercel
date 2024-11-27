@@ -169,5 +169,6 @@ export default function newsMapper(
     removeFromNewsGrid: fieldData["remove-from-news-grid"] || false,
     name: fieldData.name || "",
     slug: `/media/${fieldData.slug}` || "",
+    originalSlug: fieldData.slug || "",
   };
 }
