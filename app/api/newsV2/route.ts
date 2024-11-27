@@ -3,16 +3,16 @@ import { sql } from "@vercel/postgres";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const offset = parseInt(url.searchParams.get("offset") || "0", 10); // Default offset to 0 if not provided
-  const limit = 10; // Fixed chunk size of 10 rows
+  const limit = 150; // Fixed chunk size of 10 rows
 
   try {
     const { rows } = await sql`
-      SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset};
+      SELECT * FROM news ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset};
     `;
-  
+
     const fetchMore = rows.length === limit; // Determine if more data is available (fetchMore = true if full chunk is returned)
-    const rowsLength = rows.length;
-    return new Response(JSON.stringify({ rows, fetchMore,rowsLength  }), {
+
+    return new Response(JSON.stringify({ rows, fetchMore }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
-    console.error("Error fetching posts:", error.message);
+    console.error("Error fetching news:", error.message);
 
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
