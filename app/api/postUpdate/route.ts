@@ -86,14 +86,14 @@ export async function POST(req: Request) {
   
       console.log("Checking for existing record in database...");
       const existingRecord = await client.sql`
-        SELECT * FROM posts WHERE webflow_item_id = ${singlePost.webflowId};
+        SELECT * FROM ${tableName} WHERE webflow_item_id = ${singlePost.webflowId};
       `;
       console.log("Existing record:", existingRecord.rows);
   
       if (existingRecord.rows.length > 0) {
         console.log("Updating existing record...");
         await client.sql`
-          UPDATE posts
+          UPDATE ${tableName}
           SET 
             slug = ${singlePost.originalSlug},
             updated_at = ${new Date().toISOString()},
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       } else {
         console.log("Inserting new record...");
         await client.sql`
-          INSERT INTO posts (
+          INSERT INTO ${tableName}(
             webflow_collection_id,
             webflow_item_id,
             created_at,
