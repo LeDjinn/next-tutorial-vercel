@@ -5,7 +5,7 @@ import { getTableById } from "@/app/lib/webflow/getTableById";
 import newsMapper from "@/app/lib/webflow/transformers/newsMapper";
 import postMapper from "@/app/lib/webflow/transformers/postMapper";
 import { db } from "@vercel/postgres";
-import { table } from "console";
+
 
 const client = await db.connect();
 
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
  
     if (!tableName) {
       throw new Error(
-        `Invalid collectionId or table name not found this is the nanme of the table posts.`
+        `Invalid collectionId or table name not found this is the nanme of the table posts  collection id ${collectionId}  and table name ${tableName}.`
       );
     }
 
