@@ -1,4 +1,4 @@
-export async function GET(req:any) {
+export async function POST(req:any) {
     try {
       // Parse the request body to JSON
       const body = await req.json();
