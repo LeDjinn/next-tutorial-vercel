@@ -80,66 +80,106 @@ export async function POST(req: Request) {
         );
       }
   
-      // Use the appropriate cleaner function based on the collection
       let cleanedData;
-      if (tableName === "news") {
-        console.log("Processing news collection...");
-        cleanedData = await getCleanNews({ item: payload });
-      } else {
-        console.log("Processing other collections...");
-        cleanedData = await getCleanPost({ item: payload });
-      }
   
-      console.log("Cleaned data:", cleanedData);
+      switch (tableName) {
+        case "news":
+          console.log("Processing news collection...");
+          cleanedData = await getCleanNews({ item: payload });
   
-      // Adjust field names and table names for 'news'
-      const fieldName = tableName === "news" ? "fielddata" : "field_data";
-      const table = tableName === "news" ? "news" : "posts";
+          console.log("Checking for existing news record...");
+          const existingNewsRecord = await client.sql`
+            SELECT * FROM news WHERE webflow_item_id = ${cleanedData.webflowId};
+          `;
+          console.log("Existing news record:", existingNewsRecord.rows);
   
-      console.log(`Using table: ${table}, field name: ${fieldName}`);
+          if (existingNewsRecord.rows.length > 0) {
+            console.log("Updating existing news record...");
+            await client.sql`
+              UPDATE news
+              SET 
+                slug = ${cleanedData.originalSlug},
+                updated_at = ${new Date().toISOString()},
+                fielddata = ${JSON.stringify(cleanedData)}::JSONB
+              WHERE webflow_item_id = ${cleanedData.webflowId};
+            `;
+          } else {
+            console.log("Inserting new news record...");
+            await client.sql`
+              INSERT INTO news (
+                webflow_collection_id,
+                webflow_item_id,
+                created_at,
+                updated_at,
+                fielddata,
+                slug
+              )
+              VALUES (
+                ${cleanedData.webflowCollectionId},
+                ${cleanedData.webflowId},
+                ${
+                  cleanedData.createdOn
+                    ? new Date(cleanedData.createdOn).toISOString()
+                    : new Date().toISOString()
+                },
+                ${new Date().toISOString()},
+                ${JSON.stringify(cleanedData)}::JSONB,
+                ${cleanedData.originalSlug}
+              );
+            `;
+          }
+          break;
   
-      // Check if the record exists in the database
-      const existingRecord = await client.sql`
-        SELECT * FROM ${table} WHERE webflow_item_id = ${cleanedData.webflowId};
-      `;
-      console.log("Existing record:", existingRecord.rows);
+        case "posts":
+          console.log("Processing posts collection...");
+          cleanedData = await getCleanPost({ item: payload });
   
-      if (existingRecord.rows.length > 0) {
-        // Update the existing record
-        console.log("Updating existing record...");
-        await client.sql`
-          UPDATE ${table}
-          SET 
-            slug = ${cleanedData.originalSlug},
-            updated_at = ${new Date().toISOString()},
-            ${fieldName} = ${JSON.stringify(cleanedData)}::JSONB
-          WHERE webflow_item_id = ${cleanedData.webflowId};
-        `;
-      } else {
-        // Insert a new record
-        console.log("Inserting new record...");
-        await client.sql`
-          INSERT INTO ${table} (
-            webflow_collection_id,
-            webflow_item_id,
-            created_at,
-            updated_at,
-            ${fieldName},
-            slug
-          )
-          VALUES (
-            ${cleanedData.webflowCollectionId},
-            ${cleanedData.webflowId},
-            ${
-              cleanedData.createdOn
-                ? new Date(cleanedData.createdOn).toISOString()
-                : new Date().toISOString()
-            },
-            ${new Date().toISOString()},
-            ${JSON.stringify(cleanedData)}::JSONB,
-            ${cleanedData.originalSlug}
-          );
-        `;
+          console.log("Checking for existing posts record...");
+          const existingPostsRecord = await client.sql`
+            SELECT * FROM posts WHERE webflow_item_id = ${cleanedData.webflowId};
+          `;
+          console.log("Existing posts record:", existingPostsRecord.rows);
+  
+          if (existingPostsRecord.rows.length > 0) {
+            console.log("Updating existing posts record...");
+            await client.sql`
+              UPDATE posts
+              SET 
+                slug = ${cleanedData.originalSlug},
+                updated_at = ${new Date().toISOString()},
+                field_data = ${JSON.stringify(cleanedData)}::JSONB
+              WHERE webflow_item_id = ${cleanedData.webflowId};
+            `;
+          } else {
+            console.log("Inserting new posts record...");
+            await client.sql`
+              INSERT INTO posts (
+                webflow_collection_id,
+                webflow_item_id,
+                created_at,
+                updated_at,
+                field_data,
+                slug
+              )
+              VALUES (
+                ${cleanedData.webflowCollectionId},
+                ${cleanedData.webflowId},
+                ${
+                  cleanedData.createdOn
+                    ? new Date(cleanedData.createdOn).toISOString()
+                    : new Date().toISOString()
+                },
+                ${new Date().toISOString()},
+                ${JSON.stringify(cleanedData)}::JSONB,
+                ${cleanedData.originalSlug}
+              );
+            `;
+          }
+          break;
+  
+        default:
+          console.log(`Unsupported table: ${tableName}`);
+          throw new Error(`Unsupported table: ${tableName}`);
       }
   
       console.log("Record processed successfully.");
@@ -158,5 +198,6 @@ export async function POST(req: Request) {
       );
     }
   }
+  
   
   
