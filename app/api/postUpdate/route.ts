@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       }
   
       // Get the dynamic table name
-      const tableName = getTableById(collectionId);
+      const tableName = 'posts';
       if (!tableName) {
         throw new Error(`Invalid collectionId or table name not found this is the nanme of the table ${tableName}.`);
       }
