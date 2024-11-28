@@ -47,7 +47,8 @@ async function getCleanNews({ item }: { item: Item<NewsRawFields> }) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { payload, collectionId } = body;
+    const payload = body.payload;
+    const collectionId = payload.collectionId;
     const tableName = getTableById(collectionId);
     console.log(tableName);
 
