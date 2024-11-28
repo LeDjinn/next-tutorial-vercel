@@ -45,13 +45,13 @@ export async function POST(req: Request) {
 
     // Check if the record already exists
     const existingRecord = await client.sql`
-      SELECT * FROM ${tableName} WHERE webflow_item_id = ${singlePost.webflowId};
+      SELECT * FROM posts WHERE webflow_item_id = ${singlePost.webflowId};
     `;
 
     if (existingRecord.rows.length > 0) {
       // Update the existing record's slug with originalSlug
       await client.sql`
-        UPDATE ${tableName}
+        UPDATE posts
         SET 
           slug = ${singlePost.originalSlug},
           updated_at = ${new Date().toISOString()},
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
     // If no record exists, insert the new post
     await client.sql`
-      INSERT INTO ${tableName} (
+      INSERT INTO posts (
         webflow_item_id,
         slug,
         created_at,
