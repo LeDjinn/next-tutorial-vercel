@@ -3,8 +3,11 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import styles from "@/app/ui/home.module.css";
 import Image from "next/image";
+import { get } from "http";
+import { getTableById } from "./lib/webflow/getTableById";
 
 export default function Page() {
+  const tableName = getTableById("61ee828a15a3183262bde542")
   return (
     <main className="flex min-h-screen flex-col p-6">
       <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
@@ -17,7 +20,7 @@ export default function Page() {
             <a href="https://nextjs.org/learn/" className="text-blue-500">
               Next.js Learn Course
             </a>
-            , brought to you by Vercel.
+            , brought to you by Vercel. {tableName}
           </p>
           <div className="relative w-0 h-0 border-l-[15px] border-r-[15px] border-b-[26px] border-l-transparent border-r-transparent border-b-black" />
           <div className={styles.shape} />
