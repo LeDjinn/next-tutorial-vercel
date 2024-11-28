@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const payload = body.payload;
     const collectionId = payload.collectionId;
     const tableName = getTableById(collectionId);
-    console.log('this is the body',body);
+    console.log('this is the body',body.payload.collectionId);
 
     // Check if `isDraft` is true; if so, skip processing
     if (payload.isDraft) {
