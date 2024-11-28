@@ -36,7 +36,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "no-store", // Prevent caching
-        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Origin": "https://www.communityjameel.org",
       },
     });
   } catch (error: any) {
