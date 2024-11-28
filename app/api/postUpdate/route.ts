@@ -80,48 +80,64 @@ export async function POST(req: Request) {
         );
       }
   
-      console.log("Fetching clean post data...");
-      const singlePost = await getCleanPost({ item: payload });
-      console.log("Cleaned post data:", singlePost);
+      // Use the appropriate cleaner function based on the collection
+      let cleanedData;
+      if (tableName === "news") {
+        console.log("Processing news collection...");
+        cleanedData = await getCleanNews({ item: payload });
+      } else {
+        console.log("Processing other collections...");
+        cleanedData = await getCleanPost({ item: payload });
+      }
   
-      console.log("Checking for existing record in database...");
+      console.log("Cleaned data:", cleanedData);
+  
+      // Adjust field names and table names for 'news'
+      const fieldName = tableName === "news" ? "fielddata" : "field_data";
+      const table = tableName === "news" ? "news" : "posts";
+  
+      console.log(`Using table: ${table}, field name: ${fieldName}`);
+  
+      // Check if the record exists in the database
       const existingRecord = await client.sql`
-        SELECT * FROM ${tableName} WHERE webflow_item_id = ${singlePost.webflowId};
+        SELECT * FROM ${table} WHERE webflow_item_id = ${cleanedData.webflowId};
       `;
       console.log("Existing record:", existingRecord.rows);
   
       if (existingRecord.rows.length > 0) {
+        // Update the existing record
         console.log("Updating existing record...");
         await client.sql`
-          UPDATE ${tableName}
+          UPDATE ${table}
           SET 
-            slug = ${singlePost.originalSlug},
+            slug = ${cleanedData.originalSlug},
             updated_at = ${new Date().toISOString()},
-            field_data = ${JSON.stringify(singlePost)}::JSONB
-          WHERE webflow_item_id = ${singlePost.webflowId};
+            ${fieldName} = ${JSON.stringify(cleanedData)}::JSONB
+          WHERE webflow_item_id = ${cleanedData.webflowId};
         `;
       } else {
+        // Insert a new record
         console.log("Inserting new record...");
         await client.sql`
-          INSERT INTO ${tableName}(
+          INSERT INTO ${table} (
             webflow_collection_id,
             webflow_item_id,
             created_at,
             updated_at,
-            field_data,
+            ${fieldName},
             slug
           )
           VALUES (
-            ${singlePost.webflowCollectionId},
-            ${singlePost.webflowId},
+            ${cleanedData.webflowCollectionId},
+            ${cleanedData.webflowId},
             ${
-              singlePost.createdOn
-                ? new Date(singlePost.createdOn).toISOString()
+              cleanedData.createdOn
+                ? new Date(cleanedData.createdOn).toISOString()
                 : new Date().toISOString()
             },
             ${new Date().toISOString()},
-            ${JSON.stringify(singlePost)}::JSONB,
-            ${singlePost.originalSlug}
+            ${JSON.stringify(cleanedData)}::JSONB,
+            ${cleanedData.originalSlug}
           );
         `;
       }
@@ -142,4 +158,5 @@ export async function POST(req: Request) {
       );
     }
   }
+  
   
