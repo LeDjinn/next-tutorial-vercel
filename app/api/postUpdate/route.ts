@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       // Get the dynamic table name
       const tableName = 'posts';
       if (!tableName) {
-        throw new Error(`Invalid collectionId or table name not found this is the nanme of the table ${tableName}.`);
+        throw new Error(`Invalid collectionId or table name not found this is the nanme of the table posts.`);
       }
   
       // Fetch and clean post data
@@ -56,13 +56,13 @@ export async function POST(req: Request) {
   
       // Check if the record exists in the database
       const existingRecord = await client.sql`
-        SELECT * FROM ${tableName} WHERE webflow_item_id = ${singlePost.webflowId};
+        SELECT * FROM posts WHERE webflow_item_id = ${singlePost.webflowId};
       `;
   
       if (existingRecord.rows.length > 0) {
         // Update the existing record
         await client.sql`
-          UPDATE ${tableName}
+          UPDATE posts
           SET 
             slug = ${singlePost.originalSlug},
             updated_at = ${new Date().toISOString()},
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       } else {
         // Insert a new record
         await client.sql`
-          INSERT INTO ${tableName} (
+          INSERT INTO posts (
             webflow_collection_id,
             webflow_item_id,
             created_at,
