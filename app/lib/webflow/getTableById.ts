@@ -28,6 +28,6 @@ export function getTableById(id: string) {
       { id: "662b9a518308527ce5ebe005", displayName: "Countries", table: "country" }
     ];
     const collection = collections.find(item => item.id === id);
-    return collection ? `${collection.table}s` : '';
+    return collection ? collection.table : '';
   }
   
