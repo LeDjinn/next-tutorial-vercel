@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const payload = body.payload;
     const collectionId = payload.collectionId;
     const tableName = getTableById(collectionId);
-    console.log(tableName);
+    console.log('this is the body',body);
 
     // Check if `isDraft` is true; if so, skip processing
     if (payload.isDraft) {
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
  
     if (!tableName) {
       throw new Error(
-        `Invalid collectionId or table name not found this is the nanme of the table posts  collection id ${collectionId}  and table name ${tableName}.`
+        `Invalid collectionId or table name not found this is the nanme of the table posts the body ${body}  collection id ${collectionId}  and table name ${tableName}.`
       );
     }
 
