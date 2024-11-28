@@ -85,7 +85,7 @@ async function populatePostsTable(posts: PostFieldsCleaned[]) {
             },
             ${new Date().toISOString()},
             ${JSON.stringify(post)}::JSONB,
-            ${post.slug}
+            ${post.originalSlug}
           )
           ON CONFLICT DO NOTHING; -- This should be outside VALUES
         `;
