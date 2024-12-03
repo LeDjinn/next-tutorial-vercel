@@ -2,18 +2,18 @@ import { db } from "@vercel/postgres";
 
 const client = await db.connect();
 
-async function createNewsTable() {
+async function createTable() {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
   await client.sql`
-    CREATE TABLE IF NOT EXISTS news (
+    CREATE TABLE IF NOT EXISTS events (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       webflow_collection_id TEXT NOT NULL,
       webflow_item_id TEXT NOT NULL,
       slug TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT NOW() NOT NULL,
       updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
-      fieldData JSONB NOT NULL,
+      field_data JSONB NOT NULL,
       UNIQUE (webflow_collection_id, webflow_item_id)
     );
   `;
@@ -46,9 +46,9 @@ async function createNewsTable() {
 
 export async function GET() {
   try {
-    console.log("Adding slug column...");
-    await createNewsTable();
-    return new Response(JSON.stringify({ message: "Slug column added successfully" }), {
+    console.log("Creating table..");
+    await createTable();
+    return new Response(JSON.stringify({ message: "Table events created succesifully " }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

@@ -274,6 +274,10 @@ export interface EventFieldData {
 
 export interface EventFieldDataCleaned {
   mainVideoEmbedCode: string;
+  webflowCollectionId: string;
+
+  originalSlug: string;
+  webflowId: string;
   video2EmbedCode: string;
   video3EmbedCode: string;
   createdOn: string;
@@ -910,7 +914,6 @@ export interface NewsCleanedFields {
   removeFromNewsGrid: boolean;
   name: string;
   slug: string;
-  
 }
 export interface MediaCardProps {
   imageUrl: string;

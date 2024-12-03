@@ -6,6 +6,7 @@ import {
   ProgrammeRawFields,
   PeopleRawFields,
 } from "../../../../app/interfaces";
+import { getIdByDisplayName } from "../getByDisplayName";
 import { formatDateArabic } from "../utils/fromDateArabic";
 function calculateReadTime(text: string): string {
   const wordsPerMinute = 200;
@@ -98,8 +99,12 @@ export default function eventMapper(
     arabicName: matchProgrammes[0]?.fieldData["field-arabic"] || "N/A",
     slug: "N/A",
   };
+  const collectionId =  getIdByDisplayName('Events');
   return {
     createdOn: item.createdOn,
+    originalSlug: item.fieldData.slug,
+    webflowCollectionId: collectionId,
+    webflowId: item.id,
     video2EmbedCode: item.fieldData["video-2-embed-code"] || "",
     video3EmbedCode: item.fieldData["video-3-embed-code"] || "",
     mainVideoEmbedCode: item.fieldData["main-video-embed-code"] || "",
