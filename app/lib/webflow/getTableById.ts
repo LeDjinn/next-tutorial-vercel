@@ -7,7 +7,7 @@ export function getTableById(id: string) {
       { id: "61ee828a15a3185c99bde543", displayName: "News", table: "news" },
       { id: "61ee828a15a3185051bde544", displayName: "Tags", table: "tags" },
       { id: "61ee828a15a3183f55bde545", displayName: "Sources", table: "sources" },
-      { id: "6225fe8b1f52b40001a99d66", displayName: "Events", table: "whats-on" },
+      { id: "6225fe8b1f52b40001a99d66", displayName: "Events", table: "events" },
       { id: "6225ffe9b0cebfbd804959d2", displayName: "Partners", table: "partners" },
       { id: "62271a6df4ceb0027d91e6c4", displayName: "People", table: "people" },
       { id: "62752651d15f281220c102cb", displayName: "Multimedia", table: "media" },
