@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       fielddata->'programme'->>'slug' AS "programmeSlug",
       fielddata->'programme'->>'url' AS "programmeUrl"
     FROM news
-    ORDER BY created_at DESC
+     ORDER BY TO_DATE(fielddata->>'datePublished', 'DD Month YYYY') DESC
     LIMIT ${limit} OFFSET ${offset};
   `;
 

@@ -7,7 +7,7 @@ export async function GET(request: Request) {
 
   try {
     const { rows } = await sql`
-      SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset};
+      SELECT * FROM posts   ORDER BY TO_DATE(field_data->>'datePublished', 'DD Month YYYY') DESC LIMIT ${limit} OFFSET ${offset};
     `;
   
     const fetchMore = rows.length === limit; // Determine if more data is available (fetchMore = true if full chunk is returned)
